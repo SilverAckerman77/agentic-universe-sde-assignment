@@ -262,6 +262,22 @@ def _csv_write(path: Path, columns: list[str], rows: list[dict[str, Any]]) -> No
         writer.writerows(rows)
 
 
+def _lead_bucket(lead_calls: list[dict]) -> str:
+    """Apply the assignment's lead-bucket priority order."""
+
+    if not lead_calls:
+        return "yet_to_reach_out"
+
+    if any(call["is_terminal"] for call in lead_calls):
+        return "completed"
+
+    if all(call["telephony_failed"] for call in lead_calls):
+        return "in_progress_telephony_failed"
+
+    return "in_progress_dialed"
+
+
+
 def generate_reports(
     db_path: str | Path,
     output_dir: str | Path,
@@ -313,14 +329,7 @@ def generate_reports(
                 key=lambda c: (_timestamp(c["initiated_at"]), c["call_id"]),
             )
 
-            if not lead_calls:
-                bucket = "yet_to_reach_out"
-            elif any(call["is_terminal"] for call in lead_calls):
-                bucket = "completed"
-            elif all(call["telephony_failed"] for call in lead_calls):
-                bucket = "in_progress_telephony_failed"
-            else:
-                bucket = "in_progress_dialed"
+            bucket = _lead_bucket(lead_calls)
 
             latest_disposition_call = next(
                 (
