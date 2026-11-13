@@ -166,7 +166,7 @@ def ingest_drop(
         connection.close()
 
 
-def main():
+'''def main():
     parser = argparse.ArgumentParser(
         description="Agentic Universe interaction pipeline"
     )
@@ -194,6 +194,36 @@ def main():
             args.db,
         )
 
+        print(json.dumps(result, indent=2))
+
+
+if __name__ == "__main__":
+    main()'''
+
+def main():
+    import argparse
+    from solution.reporting.reports import generate_reports
+
+    parser = argparse.ArgumentParser(
+        description="Agentic Universe interaction pipeline"
+    )
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    ingest_parser = subparsers.add_parser("ingest")
+    ingest_parser.add_argument("drop_path")
+    ingest_parser.add_argument("--db", default=str(DEFAULT_DB_PATH))
+
+    report_parser = subparsers.add_parser("report")
+    report_parser.add_argument("--out", default="reports/")
+    report_parser.add_argument("--db", default=str(DEFAULT_DB_PATH))
+
+    args = parser.parse_args()
+
+    if args.command == "ingest":
+        result = ingest_drop(args.drop_path, args.db)
+        print(json.dumps(result, indent=2))
+    elif args.command == "report":
+        result = generate_reports(args.db, args.out)
         print(json.dumps(result, indent=2))
 
 
