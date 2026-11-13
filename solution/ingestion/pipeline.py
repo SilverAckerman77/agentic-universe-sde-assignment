@@ -17,6 +17,7 @@ from solution.ingestion.schema_loader import (
     load_workflow_schemas,
     load_dispositions,
 )
+from solution.reporting.reports import generate_reports
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -201,9 +202,6 @@ if __name__ == "__main__":
     main()'''
 
 def main():
-    import argparse
-    from agentic_assignment_reporting.reports import generate_reports
-
     parser = argparse.ArgumentParser(
         description="Agentic Universe interaction pipeline"
     )
