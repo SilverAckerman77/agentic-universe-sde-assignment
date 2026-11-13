@@ -202,7 +202,7 @@ if __name__ == "__main__":
 
 def main():
     import argparse
-    from solution.reporting.reports import generate_reports
+    from agentic_assignment_reporting.reports import generate_reports
 
     parser = argparse.ArgumentParser(
         description="Agentic Universe interaction pipeline"
