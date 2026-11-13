@@ -5,7 +5,7 @@ from solution.database.connection import get_connection
 from solution.database.initialize import initialize_database
 from solution.database.repository import upsert_lead_record
 from solution.ingestion.schema_loader import load_workflow_schemas
-from solution.reporting.reports import generate_reports
+from agentic_assignment_reporting.reports import generate_reports
 from solution.security.encryption import phone_digest
 
 
